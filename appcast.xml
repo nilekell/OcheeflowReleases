@@ -1,14 +1,14 @@
 <?xml version="1.0" standalone="yes"?>
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
     <channel>
-        <title>GiveMeTwenty</title>
+        <title>Ocheeflow</title>
         <item>
-            <title>1.9</title>
-            <pubDate>Sun, 09 Jun 2024 17:55:26 +0100</pubDate>
-            <sparkle:version>3</sparkle:version>
-            <sparkle:shortVersionString>1.9</sparkle:shortVersionString>
+            <title>2.0</title>
+            <pubDate>Wed, 07 Aug 2024 10:55:55 +0100</pubDate>
+            <sparkle:version>6</sparkle:version>
+            <sparkle:shortVersionString>2.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/nilekell/GiveMeTwentyReleases/releases/download/prod/GiveMeTwenty.dmg" length="1730844" type="application/octet-stream" sparkle:edSignature="lmW6baXHvmSXB7RuDWVk17Li53OyK3a+UUW8rlKKm1HKfypUKDZQB/qC/J22edcYkXQRIMXpZn1o9030eGrCAA=="/>
+            <enclosure url="https://github.com/nilekell/OcheeflowReleases/releases/download/prod/Ocheeflow.dmg" length="4665800" type="application/octet-stream" sparkle:edSignature="nElRU9sWuOPuMTM+y/9uAJNnkPQNO05JJJpFSImT55pUE9FaoIqg57WWvlS7hA3ON0LD6zVgdUkKYOw6tKleCA=="/>
         </item>
     </channel>
 </rss>
