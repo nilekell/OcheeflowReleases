@@ -3,12 +3,12 @@
     <channel>
         <title>Ocheeflow</title>
         <item>
-            <title>2.2</title>
-            <pubDate>Wed, 04 Sep 2024 15:49:49 +0100</pubDate>
-            <sparkle:version>8</sparkle:version>
-            <sparkle:shortVersionString>2.2</sparkle:shortVersionString>
+            <title>2.3</title>
+            <pubDate>Thu, 12 Sep 2024 20:48:20 +0100</pubDate>
+            <sparkle:version>10</sparkle:version>
+            <sparkle:shortVersionString>2.3</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://github.com/nilekell/OcheeflowReleases/releases/download/prod/Ocheeflow.dmg" length="6312818" type="application/octet-stream" sparkle:edSignature="YZMFlYrfHufLxvvqYIn7Wy6QbfrzK7yhtpTVc16TK3Zx+K7mA14li0PeRQwZFZaFOT0d+2ahZO7i6Wc4VuwIAg=="/>
+            <enclosure url="https://nilekell.github.io/OcheeflowReleases/Ocheeflow.dmg" length="6330176" type="application/octet-stream" sparkle:edSignature="1sPNVanMDgITMDR9K8O37s+sYnYpJ27P9wfQ/hu5V9GCNZoEgrr1BM8RoqUsVjUX8blClNtmDrg1BrPphpxCAQ=="/>
         </item>
     </channel>
 </rss>
