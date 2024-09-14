@@ -167,7 +167,7 @@ check_exit_status "Failed to export archive ${ARCHIVE_PATH}" "Exported archive t
 # cleanup ExportOptions.plist with real values
 rm "${BUILD_CONTEXT_PATH}/ExportOptions.plist"
 
-check_exit_status "Failed to delete archive ${BUILD_CONTEXT_PATH}/ExportOptions.plist" "Deleted ${BUILD_CONTEXT_PATH}/ExportOptions.plist"
+check_exit_status "Failed to delete ${BUILD_CONTEXT_PATH}/ExportOptions.plist" "Deleted ${BUILD_CONTEXT_PATH}/ExportOptions.plist"
 
 # send archive to notarization service
 # wait until apple finishes notarization
