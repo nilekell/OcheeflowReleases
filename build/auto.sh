@@ -4,7 +4,7 @@
 source ./env_vars.sh
 export PROJECT_NAME PROJECT_PATH GENERAL_RELEASES_PATH OCHEEFLOW_RELEASES_REPO XCODE_DERIVED_DATA_PATH
 export OLD_APPCAST_URL NEW_APPCAST_URL
-export GITHUB_PAT_PATH APPLE_CODESIGN_IDENTITY APPLE_ID APPLE_NOTARY_PASSWORD APPLE_TEAM_ID
+export GITHUB_TOKEN APPLE_CODESIGN_IDENTITY APPLE_ID APPLE_NOTARY_PASSWORD APPLE_TEAM_ID
 
 # function check if command fails
 check_exit_status() {
@@ -17,10 +17,10 @@ check_exit_status() {
     fi
 }
 
-# authenticate with github cli
-export GITHUB_TOKEN=$(echo $(cat "${GITHUB_PAT_PATH}"))
+# check if logged in with github cli
+gh auth status
 
-check_exit_status "Failed to find Github Personal Access Token at: ${GITHUB_PAT_PATH}" "Exported env [${GITHUB_PAT_PATH}] to environment. Logged into Github CLI."
+check_exit_status "Failed to authenticate Github Personal Access Token with GitHub CLI." "Logged into Github CLI with exported GITHUB_TOKEN."
 
 cd "${PROJECT_PATH}"
 
