@@ -57,8 +57,6 @@ content = re.sub(marketing_version_pattern, lambda match: f"{match.group(1)}{rou
 # Write the updated content back to the file
 with open(file_path, 'w', encoding='utf-8') as file:
     file.write(content)
-
-print("Versions updated successfully.")
 EOF
 
 # computed variables
