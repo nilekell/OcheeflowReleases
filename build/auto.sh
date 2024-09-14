@@ -10,10 +10,10 @@ export GITHUB_TOKEN APPLE_CODESIGN_IDENTITY APPLE_ID APPLE_NOTARY_PASSWORD APPLE
 check_exit_status() {
     local exit_code=$?
     if [[ $exit_code -eq 1 ]]; then
-        echo "$1"
+        echo "SUCCESS: $1"
         exit $exit_code
     else
-        echo "$2"
+        echo "ERROR: $2"
     fi
 }
 
@@ -280,6 +280,6 @@ git push origin prod --force
 
 check_exit_status "Failed to push prod tag to origin" "Pushed prod tag to origin successfully"
 
-echo "All steps completed successfully! The ${VERSION} [${BUILD_NUMBER}] release has been built, notarized, and uploaded. The production tag is now up to date."
+echo "All steps completed successfully! ${PROJECT_NAME} ${VERSION} [${BUILD_NUMBER}] release has been built, notarized, and uploaded. The production tag is now up to date."
 
 exit 0
