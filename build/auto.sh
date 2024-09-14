@@ -3,7 +3,7 @@
 # retrieve static environment variables
 source ./env_vars.sh
 export PROJECT_NAME PROJECT_PATH GENERAL_RELEASES_PATH OCHEEFLOW_RELEASES_REPO XCODE_DERIVED_DATA_PATH
-export OLD_APPCAST_URL NEW_APPCAST_URL
+export NEW_APPCAST_URL
 export GITHUB_TOKEN APPLE_CODESIGN_IDENTITY APPLE_ID APPLE_NOTARY_PASSWORD APPLE_TEAM_ID
 
 # function check if command fails
@@ -222,26 +222,19 @@ import re
 
 # Define the paths and URLs
 file_path = os.path.join(os.getenv('RELEASE_DESTINATION'), 'appcast.xml')
-old_url = os.getenv('OLD_APPCAST_URL')
 new_url = os.getenv('NEW_APPCAST_URL')
 
-# Read the XML file as a regular text file
+# Read the file as plain text
 with open(file_path, 'r', encoding='utf-8') as file:
     content = file.read()
 
-# Use regex to find and replace the URL in the enclosure tag
-pattern = re.compile(r'(enclosure\s+[^>]*url=\")' + re.escape(old_url) + r'(\"[^>]*>)')
-new_content = pattern.sub(r'\1' + new_url + r'\2', content)
+# Use regex to find and replace the 'url' attribute within the <enclosure> tag
+pattern = r'(<enclosure[^>]*url=")([^"]+)(")'
+updated_content = re.sub(pattern, r'\1' + new_url + r'\3', content)
 
-# Check if any replacement was made
-if old_url in content:
-    print(f'Replaced URL: {old_url} with {new_url}')
-else:
-    print('URL not found or already updated.')
-
-# Write the modified content back to the file
+# Write the updated content back to the file
 with open(file_path, 'w', encoding='utf-8') as file:
-    file.write(new_content)
+    file.write(updated_content)
 EOF
 
 check_exit_status "Failed to replace URL in: ${RELEASE_DESTINATION}/appcast.xml" "Replaced URL in: ${RELEASE_DESTINATION}/appcast.xml"
