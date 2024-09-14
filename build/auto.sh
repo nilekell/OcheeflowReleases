@@ -2,7 +2,7 @@
 
 # retrieve static environment variables
 source ./env_vars.sh
-export APP_NAME PROJECT_PATH GENERAL_RELEASES_PATH OCHEEFLOW_RELEASES_REPO XCODE_DERIVED_DATA_PATH
+export PROJECT_NAME PROJECT_PATH GENERAL_RELEASES_PATH OCHEEFLOW_RELEASES_REPO XCODE_DERIVED_DATA_PATH
 export OLD_APPCAST_URL NEW_APPCAST_URL
 export GITHUB_PAT_PATH APPLE_CODESIGN_IDENTITY APPLE_ID APPLE_NOTARY_PASSWORD APPLE_TEAM_ID
 
@@ -37,7 +37,8 @@ import re
 
 # Path to the project file
 project_path = os.getenv('PROJECT_PATH')
-file_path = os.path.join(project_path, 'Ocheeflow.xcodeproj', 'project.pbxproj')
+project_name = os.getenv('PROJECT_NAME')
+file_path = os.path.join(project_path, f'{project_name}.xcodeproj', 'project.pbxproj')
 
 # Read the file content
 with open(file_path, 'r', encoding='utf-8') as file:
@@ -61,15 +62,15 @@ print("Versions updated successfully.")
 EOF
 
 # computed variables
-export VERSION=v$(sed -n '/MARKETING_VERSION/{s/MARKETING_VERSION = //;s/;//;s/^[[:space:]]*//;p;q;}' "${PROJECT_PATH}/Ocheeflow.xcodeproj/project.pbxproj")
+export VERSION=v$(sed -n '/MARKETING_VERSION/{s/MARKETING_VERSION = //;s/;//;s/^[[:space:]]*//;p;q;}' "${PROJECT_PATH}/${PROJECT_NAME}.xcodeproj/project.pbxproj")
 export BUILD_NUMBER=$(xcrun agvtool what-version -terse)
 
-check_exit_status "Failed to increment version and/or build number in: ${PROJECT_PATH}/Ocheeflow.xcodeproj/project.pbxproj" "Incremented version and build number to ${VERSION} [${BUILD_NUMBER}] in: ${PROJECT_PATH}/Ocheeflow.xcodeproj/project.pbxproj"
+check_exit_status "Failed to increment version and/or build number in: ${PROJECT_PATH}/${PROJECT_NAME}.xcodeproj/project.pbxproj" "Incremented version and build number to ${VERSION} [${BUILD_NUMBER}] in: ${PROJECT_PATH}/${PROJECT_NAME}.xcodeproj/project.pbxproj"
 
 # Stage version & build number changes
-git add "${PROJECT_PATH}/Ocheeflow.xcodeproj/project.pbxproj"
+git add "${PROJECT_PATH}/${PROJECT_NAME}.xcodeproj/project.pbxproj"
 
-check_exit_status "Failed to stage: "${PROJECT_PATH}/Ocheeflow.xcodeproj/project.pbxproj"" "Staged project version changes successfully: "${PROJECT_PATH}/Ocheeflow.xcodeproj/project.pbxproj""
+check_exit_status "Failed to stage: "${PROJECT_PATH}/${PROJECT_NAME}.xcodeproj/project.pbxproj"" "Staged project version changes successfully: "${PROJECT_PATH}/${PROJECT_NAME}.xcodeproj/project.pbxproj""
 
 # Commit the changes with the commit message
 git commit -m "upgrade version to ${VERSION} [${BUILD_NUMBER}]"
@@ -96,18 +97,18 @@ echo "Version upgrade to ${VERSION} [${BUILD_NUMBER}] has been successfully comm
 
 # computed path variables
 export ARCHIVE_DESTINATION="${GENERAL_RELEASES_PATH}/Archives/${VERSION}/"
-export ARCHIVE_PATH="${ARCHIVE_DESTINATION}/${APP_NAME}.xcarchive"
-export XCODE_OCHEEFLOW_DERIVED_DATA_PATH="${XCODE_DERIVED_DATA_PATH}/Ocheeflow-cxkmslyjxofopffnjutfwsxjyoes"
+export ARCHIVE_PATH="${ARCHIVE_DESTINATION}/${PROJECT_NAME}.xcarchive"
+export XCODE_OCHEEFLOW_DERIVED_DATA_PATH="${XCODE_DERIVED_DATA_PATH}/${PROJECT_NAME}-cxkmslyjxofopffnjutfwsxjyoes"
 export BUILD_CONTEXT_PATH="${OCHEEFLOW_RELEASES_REPO}/build"
-export RELEASE_DESTINATION="${GENERAL_RELEASES_PATH}/${APP_NAME}_${VERSION}/"
-export APP_RELEASE_PATH="${RELEASE_DESTINATION}/${APP_NAME}.app"
-export DMG_RELEASE_PATH="${RELEASE_DESTINATION}/${APP_NAME}.dmg"
+export RELEASE_DESTINATION="${GENERAL_RELEASES_PATH}/${PROJECT_NAME}_${VERSION}/"
+export APP_RELEASE_PATH="${RELEASE_DESTINATION}/${PROJECT_NAME}.app"
+export DMG_RELEASE_PATH="${RELEASE_DESTINATION}/${PROJECT_NAME}.dmg"
 
 git checkout main && git pull
 
 check_exit_status "Failed to checkout main branch for repository ${PROJECT_PATH}" "Checked out main branch for ${PROJECT_PATH}"
 
-xcodebuild -scheme Ocheeflow clean
+xcodebuild -scheme ${PROJECT_NAME} clean
 
 check_exit_status "Failed to clean Xcode" "Cleaned Xcode"
 
@@ -118,7 +119,7 @@ check_exit_status "Failed to delete Xcode Derived Data: ${XCODE_DERIVED_DATA_PAT
 echo "Building version: ${VERSION} [${BUILD_NUMBER}] ..."
 
 # builds archive file from scheme
-xcodebuild archive -scheme "${APP_NAME}" \
+xcodebuild archive -scheme "${PROJECT_NAME}" \
     -configuration Release \
     -destination "generic/platform=macOS" \
     -archivePath "${ARCHIVE_PATH}"
@@ -192,7 +193,7 @@ check_exit_status "Failed to notarize archive: ${ARCHIVE_PATH}" "Notarized archi
 
 cd "${GENERAL_RELEASES_PATH}"
 # create empty dmg
-hdiutil create -size 100m -fs APFS -volname "${APP_NAME}" "${DMG_RELEASE_PATH}"
+hdiutil create -size 100m -fs APFS -volname "${PROJECT_NAME}" "${DMG_RELEASE_PATH}"
 
 check_exit_status "Failed to created empty DMG: ${DMG_RELEASE_PATH}" "Created empty DMG: ${DMG_RELEASE_PATH}"
 
@@ -200,8 +201,8 @@ check_exit_status "Failed to created empty DMG: ${DMG_RELEASE_PATH}" "Created em
 dmgcanvas \
     "${BUILD_CONTEXT_PATH}/DMGCanvas_Ocheeflow.dmgcanvas/" \
     "${DMG_RELEASE_PATH}" \
-    -setFilePath "${APP_NAME}.app" "${APP_RELEASE_PATH}" \
-    -volumeName "${APP_NAME}" \
+    -setFilePath "${PROJECT_NAME}.app" "${APP_RELEASE_PATH}" \
+    -volumeName "${PROJECT_NAME}" \
     -volumeIcon "${BUILD_CONTEXT_PATH}/volume_rounded.png" \
     -backgroundImage "${BUILD_CONTEXT_PATH}/installer_background.png" \
     -identity "${APPLE_CODESIGN_IDENTITY}" \
