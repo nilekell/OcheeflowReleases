@@ -23,10 +23,6 @@ APPLE_CODESIGN_IDENTITY APPLE_ID APPLE_NOTARY_PASSWORD APPLE_TEAM_ID
 
 check_exit_status "Failed to export environment variables from file: $1" "Exported environment variables from file: $1"
 
-printenv
-
-exit 0
-
 # check if logged in with github cli
 gh auth status
 
