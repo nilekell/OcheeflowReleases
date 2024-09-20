@@ -1,21 +1,31 @@
 #!/bin/sh
 
-# retrieve static environment variables
-source ./env_vars.sh
-export PROJECT_NAME PROJECT_PATH GENERAL_RELEASES_PATH OCHEEFLOW_RELEASES_REPO XCODE_DERIVED_DATA_PATH
-export NEW_APPCAST_URL
-export GITHUB_TOKEN APPLE_CODESIGN_IDENTITY APPLE_ID APPLE_NOTARY_PASSWORD APPLE_TEAM_ID
-
 # function check if command fails
 check_exit_status() {
     local exit_code=$?
     if [[ $exit_code -eq 1 ]]; then
-        echo "SUCCESS: $1"
+        echo "ERROR: $1"
         exit $exit_code
     else
-        echo "ERROR: $2"
+        echo "SUCCESS: $2"
     fi
 }
+
+# retrieve static environment variables from given file
+source "./$1"
+
+check_exit_status "Failed to retrieve environment variables from file: $1" "Loaded environment variables from file: $1"
+
+export PROJECT_NAME PROJECT_PATH \
+GENERAL_RELEASES_PATH OCHEEFLOW_RELEASES_REPO XCODE_DERIVED_DATA_PATH \
+NEW_APPCAST_URL GITHUB_TOKEN \
+APPLE_CODESIGN_IDENTITY APPLE_ID APPLE_NOTARY_PASSWORD APPLE_TEAM_ID
+
+check_exit_status "Failed to export environment variables from file: $1" "Exported environment variables from file: $1"
+
+printenv
+
+exit 0
 
 # check if logged in with github cli
 gh auth status
